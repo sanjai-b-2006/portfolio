@@ -116,8 +116,9 @@ nav.scrolled{border-bottom:1px solid rgba(255,255,255,.1);background:rgba(2,6,23
 .hero-side{position:relative;overflow:hidden}
 .hero-side .orb1{position:absolute;right:-56px;top:32px;width:160px;height:160px;border-radius:50%;background:rgba(103,232,249,.1);filter:blur(48px)}
 .hero-side .orb2{position:absolute;left:24px;bottom:-40px;width:128px;height:128px;border-radius:50%;background:rgba(252,211,77,.1);filter:blur(48px)}
-.photo-wrap{position:relative;width:132px;height:132px;margin:0 auto 24px;border-radius:50%;padding:4px;
-  background:conic-gradient(from var(--ang,0deg),#69d2ff,#f0b25f,#69d2ff);animation:spin 7s linear infinite}
+.photo-wrap{position:relative;width:min(280px,70%);aspect-ratio:1;margin:0 auto 28px;border-radius:50%;padding:5px;
+  background:conic-gradient(from var(--ang,0deg),#69d2ff,#f0b25f,#69d2ff);animation:spin 7s linear infinite;
+  box-shadow:0 0 60px rgba(105,210,255,.25)}
 @property --ang{syntax:'<angle>';initial-value:0deg;inherits:false}
 @keyframes spin{to{--ang:360deg}}
 .photo-wrap img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;border:4px solid #0b1526}
