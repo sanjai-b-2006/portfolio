@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>sanjai.dev | AI & ML Portfolio</title>
+<meta name="description" content="B.Tech ECE student building agentic LLM pipelines, real-time AIOps platforms, and TinyML systems. Open to AI/ML jobs and internships.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-primary:#07111f; --bg-surface:#101a2d; --bg-surface-alt:#17233a;
+  --text-primary:#ecf4ff; --text-secondary:#93a7c7;
+  --accent:#69d2ff; --accent2:#f0b25f;
+  --border:rgba(147,167,199,.18);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  min-height:100vh;color:var(--text-primary);
+  font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;
+  background:
+    radial-gradient(circle at 15% 15%,rgba(105,210,255,.15),transparent 28%),
+    radial-gradient(circle at 82% 5%,rgba(240,178,95,.12),transparent 24%),
+    linear-gradient(180deg,#07111f 0%,#091427 45%,#07111f 100%);
+  background-attachment:fixed;
+  display:flex;flex-direction:column;
+}
+a{color:inherit;text-decoration:none}
+::selection{background:#a5f3fc;color:#020617}
+.serif{font-family:'Cormorant Garamond',serif}
+
+/* ============ layout ============ */
+.page-shell{position:relative;overflow:hidden;padding:112px 16px 80px}
+.page-shell::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(147,167,199,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(147,167,199,.05) 1px,transparent 1px);
+  background-size:56px 56px;
+  mask-image:linear-gradient(180deg,rgba(0,0,0,.6),transparent 88%)}
+.page-content{position:relative;z-index:10;max-width:1152px;margin:0 auto;display:flex;flex-direction:column;gap:32px}
+
+.shell{border-radius:2rem;border:1px solid rgba(255,255,255,.1);background:rgba(16,26,45,.78);
+  padding:40px;box-shadow:0 24px 80px rgba(6,14,30,.48);backdrop-filter:blur(10px)}
+.panel{border-radius:1.5rem;border:1px solid rgba(255,255,255,.1);background:rgba(23,35,58,.82);padding:24px;backdrop-filter:blur(8px)}
+@media(max-width:640px){.shell{padding:24px}}
+
+.kicker{display:inline-flex;align-items:center;gap:8px;border-radius:100px;
+  border:1px solid rgba(103,232,249,.2);background:rgba(103,232,249,.08);
+  padding:5px 13px;font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.28em;color:#a5f3fc}
+.title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,4.5vw,3.2rem);line-height:1.02;color:#fff;font-weight:600}
+.copy{font-size:1.05rem;line-height:1.8;color:var(--text-secondary)}
+.copy-sm{font-size:.875rem;line-height:1.8;color:var(--text-secondary)}
+
+.pill{display:inline-flex;align-items:center;border-radius:100px;border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.05);padding:4px 13px;font-size:.75rem;font-weight:500;color:#e2e8f0}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.soft-line{height:1px;width:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);margin:24px 0}
+
+.metric-card{border-radius:1.5rem;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);
+  padding:20px;backdrop-filter:blur(6px);transition:.3s}
+.metric-card:hover{transform:translateY(-4px);border-color:rgba(103,232,249,.3);background:rgba(255,255,255,.05)}
+.metric-card .v{font-size:1.4rem;font-weight:700;color:#fff}
+.metric-card .l{margin-top:8px;font-size:.85rem;line-height:1.7;color:var(--text-secondary)}
+
+.btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:100px;
+  background:#a5e3fa;padding:12px 26px;font-size:.9rem;font-weight:600;color:#020617;transition:.3s;border:none;cursor:pointer;font-family:inherit}
+.btn-primary:hover{transform:translateY(-2px);background:#c3edfc}
+.btn-secondary{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:100px;
+  border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.03);padding:12px 26px;font-size:.9rem;font-weight:600;color:#f1f5f9;transition:.3s;cursor:pointer;font-family:inherit}
+.btn-secondary:hover{transform:translateY(-2px);border-color:rgba(103,232,249,.3);background:rgba(255,255,255,.06)}
+.eyebrow-link{font-size:.9rem;font-weight:600;color:#a5f3fc;transition:.3s;display:inline-flex;align-items:center;gap:8px}
+.eyebrow-link:hover{color:#cffafe}
+
+/* ============ nav ============ */
+nav{position:fixed;inset:0 0 auto 0;z-index:50;transition:.3s;padding:20px 0}
+nav.scrolled{border-bottom:1px solid rgba(255,255,255,.1);background:rgba(2,6,23,.75);padding:12px 0;backdrop-filter:blur(18px)}
+.nav-inner{max-width:1152px;margin:0 auto;padding:0 16px;display:flex;align-items:center;justify-content:space-between}
+.logo .name{font-family:'Cormorant Garamond',serif;font-size:1.8rem;letter-spacing:.02em;color:#fff;line-height:1}
+.logo .name span{color:#a5f3fc}
+.logo .sub{font-size:.63rem;text-transform:uppercase;letter-spacing:.34em;color:var(--text-secondary);transition:.3s;margin-top:3px}
+.logo:hover .sub{color:#a5f3fc}
+.nav-right{display:flex;align-items:center;gap:14px}
+.nav-pillbox{border-radius:100px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);padding:4px;display:flex}
+.nav-pillbox a{display:inline-flex;border-radius:100px;padding:8px 16px;font-size:.87rem;font-weight:500;color:var(--text-secondary);transition:.2s}
+.nav-pillbox a:hover{background:rgba(255,255,255,.05);color:#fff}
+.nav-pillbox a.active{background:#fff;color:#020617}
+.icon-btn{display:grid;place-items:center;width:42px;height:42px;border-radius:100px;border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.03);color:var(--text-secondary);transition:.3s}
+.icon-btn:hover{border-color:rgba(103,232,249,.3);color:#fff}
+.icon-btn svg{width:17px;height:17px;fill:currentColor}
+.burger{display:none}
+@media(max-width:900px){
+  .nav-pillbox,.nav-icons{display:none}
+  .burger{display:grid;place-items:center;width:44px;height:44px;border-radius:100px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);color:#fff;font-size:1.25rem;cursor:pointer}
+  .mobile-menu{position:fixed;top:76px;left:0;right:0;bottom:0;z-index:49;background:#020617;border-top:1px solid rgba(255,255,255,.1);
+    padding:20px 16px;display:none;flex-direction:column;gap:10px;overflow-y:auto}
+  .mobile-menu.open{display:flex}
+  .mobile-menu a{border-radius:1rem;padding:13px 18px;font-size:.9rem;font-weight:500;background:#0f172a;color:var(--text-secondary)}
+  .mobile-menu a.active{background:#fff;color:#020617}
+}
+@media(min-width:901px){.mobile-menu{display:none!important}}
+
+/* ============ pages ============ */
+.page{display:none;animation:pagein .5s ease both}
+.page.active{display:block}
+@keyframes pagein{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+/* ============ hero ============ */
+.hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;min-height:calc(100vh - 200px)}
+@media(max-width:960px){.hero-grid{grid-template-columns:1fr;min-height:auto}}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,6vw,4.6rem);line-height:.98;color:#fff;font-weight:600;margin-top:24px;text-wrap:balance}
+.hero h1 em{font-style:italic;color:#a5f3fc}
+.hero .desc{margin-top:24px;max-width:640px;font-size:1.1rem;line-height:1.85;color:var(--text-secondary)}
+.hero .ctas{margin-top:32px;display:flex;gap:16px;flex-wrap:wrap}
+.hero-metrics{margin-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:560px){.hero-metrics{grid-template-columns:1fr}}
+.hero-side{position:relative;overflow:hidden}
+.hero-side .orb1{position:absolute;right:-56px;top:32px;width:160px;height:160px;border-radius:50%;background:rgba(103,232,249,.1);filter:blur(48px)}
+.hero-side .orb2{position:absolute;left:24px;bottom:-40px;width:128px;height:128px;border-radius:50%;background:rgba(252,211,77,.1);filter:blur(48px)}
+.photo-wrap{position:relative;width:132px;height:132px;margin:0 auto 24px;border-radius:50%;padding:4px;
+  background:conic-gradient(from var(--ang,0deg),#69d2ff,#f0b25f,#69d2ff);animation:spin 7s linear infinite}
+@property --ang{syntax:'<angle>';initial-value:0deg;inherits:false}
+@keyframes spin{to{--ang:360deg}}
+.photo-wrap img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;border:4px solid #0b1526}
+.hero-side .eyebrow{font-size:.72rem;text-transform:uppercase;letter-spacing:.34em;color:var(--text-secondary)}
+.hero-side .stack{margin-top:16px;display:flex;flex-direction:column;gap:18px;position:relative}
+.hero-side .panel .t{font-size:.8rem;text-transform:uppercase;letter-spacing:.24em;color:#a5f3fc}
+.hero-side .panel p{margin-top:12px;font-size:.86rem;line-height:1.75;color:var(--text-secondary)}
+
+/* ============ shared page structures ============ */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:900px){.grid2,.grid3{grid-template-columns:1fr}}
+.split{display:flex;flex-direction:column;gap:24px}
+.head-row{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px}
+
+/* experience */
+.role .company{font-size:.75rem;text-transform:uppercase;letter-spacing:.3em;color:#a5f3fc}
+.role h3{margin-top:12px;font-size:1.45rem;font-weight:600;color:#fff}
+.role .meta{margin-top:8px;font-size:.85rem;color:var(--text-secondary)}
+.role ul{margin-top:20px;list-style:none;display:flex;flex-direction:column;gap:12px}
+.role li{display:flex;gap:12px;font-size:.875rem;line-height:1.8;color:var(--text-secondary)}
+.role li::before{content:"";margin-top:11px;width:8px;height:8px;flex-shrink:0;border-radius:50%;background:#a5f3fc}
+.role .row{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:flex-start}
+
+/* projects */
+.proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:960px){.proj-grid{grid-template-columns:1fr}}
+.proj-card{display:flex;flex-direction:column;height:100%}
+.proj-card .top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.proj-card .cat{font-size:.72rem;text-transform:uppercase;letter-spacing:.3em;color:#a5f3fc}
+.proj-card h3{margin-top:12px;font-size:1.45rem;font-weight:600;color:#fff}
+.proj-card .icon{border-radius:1rem;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);
+  padding:12px;font-size:1.25rem;line-height:1;transition:.3s;flex-shrink:0}
+.proj-card:hover .icon{border-color:rgba(103,232,249,.3)}
+.proj-card .impact{margin-top:20px;font-size:.875rem;line-height:1.8;color:var(--text-secondary)}
+.proj-card ul{margin-top:20px;list-style:none;display:flex;flex-direction:column;gap:12px;flex:1}
+.proj-card li{display:flex;gap:12px;font-size:.875rem;line-height:1.8;color:var(--text-secondary)}
+.proj-card li::before{content:"";margin-top:11px;width:8px;height:8px;flex-shrink:0;border-radius:50%;background:#a5f3fc}
+.proj-card .foot{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.proj-card .gh{display:inline-flex;align-items:center;gap:8px;border-radius:100px;border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.04);padding:9px 18px;font-size:.87rem;font-weight:600;color:#fff;transition:.3s}
+.proj-card .gh:hover{border-color:rgba(103,232,249,.3);color:#a5f3fc}
+.proj-card .gh svg{width:15px;height:15px;fill:currentColor}
+.filters{display:flex;gap:10px;flex-wrap:wrap}
+.fbtn{font-size:.83rem;font-weight:600;padding:9px 18px;border-radius:100px;border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.03);color:var(--text-secondary);cursor:pointer;transition:.22s;font-family:inherit}
+.fbtn:hover{color:#fff;border-color:rgba(103,232,249,.3)}
+.fbtn.active{background:#fff;color:#020617;border-color:transparent}
+.hide{display:none!important}
+
+/* skills */
+.skill-head{font-size:.75rem;text-transform:uppercase;letter-spacing:.3em;color:#a5f3fc;margin-bottom:16px}
+
+/* contact */
+.c-row{display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.c-row:last-child{border-bottom:none}
+.c-row .ic{width:44px;height:44px;flex-shrink:0;display:grid;place-items:center;border-radius:1rem;
+  border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);font-size:1.05rem}
+.c-row .small{display:block;color:var(--text-secondary);font-size:.75rem;text-transform:uppercase;letter-spacing:.2em;margin-bottom:2px}
+.c-row a,.c-row .val{font-weight:600;color:#fff;transition:.2s;font-size:.95rem;word-break:break-all}
+.c-row a:hover{color:#a5f3fc}
+
+footer{position:relative;z-index:10;border-top:1px solid rgba(255,255,255,.08);padding:32px 16px;text-align:center;
+  color:var(--text-secondary);font-size:.85rem;margin-top:auto}
+footer a{color:#a5f3fc}
+footer a:hover{color:#cffafe}
+</style>
+</head>
+<body>
+
+<nav id="nav"><div class="nav-inner">
+  <a class="logo" href="#/">
+    <div class="name">Sanjai <span>B</span></div>
+    <div class="sub">Open to AI/ML Roles</div>
+  </a>
+  <div class="nav-right">
+    <div class="nav-pillbox" id="pillbox">
+      <a href="#/" data-page="home">Home</a>
+      <a href="#/about" data-page="about">About</a>
+      <a href="#/projects" data-page="projects">Projects</a>
+      <a href="#/skills" data-page="skills">Skills</a>
+      <a href="#/contact" data-page="contact">Contact</a>
+    </div>
+    <div class="nav-icons" style="display:flex;gap:12px">
+      <a class="icon-btn" href="https://github.com/sanjai-b-2006" target="_blank" aria-label="GitHub">
+        <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      </a>
+      <a class="icon-btn" href="https://www.linkedin.com/in/sanjai-b-4a1385279/" target="_blank" aria-label="LinkedIn">
+        <svg viewBox="0 0 16 16"><path d="M0 1.15C0 .52.53 0 1.18 0h13.64C15.47 0 16 .52 16 1.15v13.7c0 .63-.53 1.15-1.18 1.15H1.18A1.17 1.17 0 0 1 0 14.85V1.15zm4.94 12.24V6.17H2.54v7.22h2.4zM3.74 5.18c.84 0 1.36-.55 1.36-1.24-.02-.71-.52-1.25-1.34-1.25S2.4 3.23 2.4 3.94c0 .69.52 1.24 1.33 1.24h.01zm4.91 8.21V9.36c0-.22.02-.43.08-.59.17-.43.57-.88 1.23-.88.87 0 1.22.66 1.22 1.63v3.87h2.4V9.25c0-2.22-1.18-3.25-2.76-3.25-1.27 0-1.84.7-2.16 1.19v.03h-.02l.02-.03V6.17h-2.4c.03.68 0 7.22 0 7.22h2.39z"/></svg>
+      </a>
+    </div>
+    <button class="burger" id="burger" aria-label="Menu">☰</button>
+  </div>
+</div></nav>
+<div class="mobile-menu" id="mobilemenu">
+  <a href="#/" data-page="home">Home</a>
+  <a href="#/about" data-page="about">About</a>
+  <a href="#/projects" data-page="projects">Projects</a>
+  <a href="#/skills" data-page="skills">Skills</a>
+  <a href="#/contact" data-page="contact">Contact</a>
+</div>
+
+<!-- ==================== HOME ==================== -->
+<div class="page" id="page-home">
+<section class="page-shell">
+  <div class="page-content">
+
+    <div class="hero-grid hero">
+      <div>
+        <span class="kicker">● Open to jobs &amp; internships</span>
+        <h1>Building <em>intelligent systems</em> that make it to production.</h1>
+        <p class="desc">I'm Sanjai B — a B.Tech ECE student at IIITDM Kancheepuram working across Deep Learning, Generative AI (LLMs), and end-to-end deployment. From agentic LangGraph pipelines and RAG to real-time AIOps platforms, I ship systems, not just notebooks — and I'm open to AI/ML jobs and internships.</p>
+        <div class="ctas">
+          <a class="btn-primary" href="#/projects">Explore projects →</a>
+          <a class="btn-secondary" href="Sanjai_B_Resume.pdf" download="Sanjai_B_Resume.pdf">⬇ Download Resume</a>
+          <a class="btn-secondary" href="#/contact">Contact for roles</a>
+        </div>
+        <div class="hero-metrics">
+          <div class="metric-card"><div class="v">47+ repositories</div><div class="l">Public builds across GenAI, ML, CV, data engineering, and IoT.</div></div>
+          <div class="metric-card"><div class="v">4 internships</div><div class="l">AI research at IIITDM, industrial IoT at Bray International, and cybersecurity at Schneider Electric.</div></div>
+          <div class="metric-card"><div class="v">90% faster</div><div class="l">Content production via my multi-agent LangGraph blog-generation pipeline.</div></div>
+          <div class="metric-card"><div class="v">8.27 CGPA</div><div class="l">B.Tech ECE at IIITDM Kancheepuram, Class of 2027.</div></div>
+        </div>
+      </div>
+
+      <div class="shell hero-side">
+        <div class="orb1"></div><div class="orb2"></div>
+        <div class="photo-wrap"><img src="photo.jpg" alt="Sanjai B" onerror="this.parentElement.style.display='none'"></div>
+        <div class="eyebrow">Why teams pick me</div>
+        <div class="stack">
+          <div class="panel"><div class="t">GenAI, done properly</div><p>Multi-agent orchestration with LangGraph, RAG with ChromaDB, and real-time streaming over Redis and WebSockets — engineered, not prompt-glued.</p></div>
+          <div class="panel"><div class="t">Production mindset</div><p>FastAPI, Celery, Docker, and CI/CD ship every serious project. If it can't be deployed and observed, it isn't done.</p></div>
+          <div class="panel"><div class="t">Full-stack delivery</div><p>React and Streamlit interfaces over real APIs and databases — every serious project is something you can actually click and use.</p></div>
+        </div>
+        <div class="soft-line"></div>
+        <div class="pills">
+          <span class="pill">Python</span><span class="pill">PyTorch</span><span class="pill">LangGraph</span>
+          <span class="pill">FastAPI</span><span class="pill">Docker</span><span class="pill">React</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="shell">
+      <div class="head-row">
+        <div>
+          <span class="kicker">Selected work</span>
+          <h2 class="title" style="margin-top:16px">Flagship AI engineering projects.</h2>
+          <p class="copy-sm" style="margin-top:16px;max-width:640px">Each featured build highlights a different strength: agentic LLM orchestration, real-time observability with ML ensembles, and voice-first GenAI products.</p>
+        </div>
+        <a class="eyebrow-link" href="#/projects">View all projects →</a>
+      </div>
+      <div class="proj-grid" style="margin-top:32px">
+
+        <article class="panel proj-card">
+          <div class="top"><div><div class="cat">GenAI · Voice</div><h3>Pocket Interview Coach</h3></div><div class="icon">🎤</div></div>
+          <p class="impact">Voice-first AI mock-interview coach scoring what you say and how you say it — pace, tone, filler words, pauses, confidence. Built for the AMD AI Developer Hackathon with a two-model design: an AI coach plus an independent AI hiring manager.</p>
+          <div class="soft-line"></div>
+          <div class="foot">
+            <div class="pills"><span class="pill">TypeScript</span><span class="pill">Gemma</span><span class="pill">Vercel</span></div>
+            <a class="gh" href="https://pocket-interview-new.vercel.app" target="_blank">Live ↗</a>
+          </div>
+        </article>
+
+        <article class="panel proj-card">
+          <div class="top"><div><div class="cat">Agents · NLP</div><h3>Agentic Blog Generation</h3></div><div class="icon">🤖</div></div>
+          <p class="impact">Asynchronous multi-agent pipeline (LangGraph + FastAPI + Celery) automating end-to-end multi-language content generation — 90% faster production, with Redis Pub/Sub state streaming and ChromaDB-backed RAG.</p>
+          <div class="soft-line"></div>
+          <div class="foot">
+            <div class="pills"><span class="pill">LangGraph</span><span class="pill">FastAPI</span><span class="pill">Redis</span></div>
+            <a class="gh" href="https://github.com/sanjai-b-2006/blogagentic" target="_blank"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+    <div class="shell">
+      <div class="head-row">
+        <div>
+          <span class="kicker">Capabilities</span>
+          <h2 class="title" style="margin-top:16px">From model to serving layer.</h2>
+        </div>
+        <p class="copy-sm" style="max-width:560px">My strongest work sits at the intersection of ML engineering and backend systems: agents, RAG, streaming APIs, anomaly detection, and edge inference — deployed with Docker and CI/CD.</p>
+      </div>
+      <div class="grid3" style="margin-top:32px">
+        <div class="metric-card"><div class="v">Agentic LLM systems</div><div class="l">LangGraph multi-agent orchestration, RAG retrieval, tool use, and real-time state streaming to the client.</div></div>
+        <div class="metric-card"><div class="v">Real-time ML platforms</div><div class="l">Anomaly-detection ensembles over live metrics with LLM-generated root-cause analysis and mitigation plans.</div></div>
+        <div class="metric-card"><div class="v">Data &amp; ML foundations</div><div class="l">Classical ML, deep learning, and data pipelines — from EDA and feature engineering to trained, evaluated, deployed models.</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+</div>
+
+<!-- ==================== ABOUT ==================== -->
+<div class="page" id="page-about">
+<section class="page-shell">
+  <div class="page-content">
+
+    <div class="shell">
+      <span class="kicker">About</span>
+      <h1 class="title" style="margin-top:16px">A student builder focused on systems that survive contact with production.</h1>
+      <p class="copy" style="margin-top:24px;max-width:880px">B.Tech ECE student at IIITDM Kancheepuram (Class of 2027, CGPA 8.27) with hands-on expertise in Deep Learning, Generative AI (LLMs), and end-to-end production deployment. I architect scalable AI applications, build data pipelines, and apply model optimization for real-time inference — with a particular interest in NLP, industrial automation, and cybersecurity. Open to AI/ML jobs and internships.</p>
+    </div>
+
+    <div class="grid3">
+      <div class="panel"><h2 style="font-size:1.2rem;color:#fff">Depth over demos</h2><p class="copy-sm" style="margin-top:14px">My projects run async workers, stream state over WebSockets, and persist to real databases — not just notebook cells.</p></div>
+      <div class="panel"><h2 style="font-size:1.2rem;color:#fff">Cross-domain range</h2><p class="copy-sm" style="margin-top:14px">GenAI agents, classical ML, computer vision, data engineering, and embedded IoT — I move comfortably between them.</p></div>
+      <div class="panel"><h2 style="font-size:1.2rem;color:#fff">Industry-tested</h2><p class="copy-sm" style="margin-top:14px">Four internship stints across AI research, industrial IoT, and cybersecurity taught me how real infrastructure behaves.</p></div>
+    </div>
+
+    <div class="shell">
+      <span class="kicker">Experience</span>
+      <h2 class="title" style="margin-top:16px">Recent roles and hands-on delivery.</h2>
+      <div class="split" style="margin-top:32px">
+
+        <article class="panel role">
+          <div class="row">
+            <div>
+              <div class="company">IIITDM Kancheepuram</div>
+              <h3>AI &amp; Machine Learning Intern — Electric Fleet Intelligence</h3>
+              <p class="meta">Chennai, India | Apr 2026 — Jun 2026</p>
+            </div>
+            <div class="pills"><span class="pill">Reinforcement Learning</span><span class="pill">PPO</span><span class="pill">Time Series</span></div>
+          </div>
+          <ul>
+            <li>Built an environment on an electric taxi fleet dataset to evaluate RL dispatch policies (PPO).</li>
+            <li>Forecast battery degradation via time-series models — LSTM, Chronos, TimeFM, and TTM.</li>
+          </ul>
+        </article>
+
+        <article class="panel role">
+          <div class="row">
+            <div>
+              <div class="company">Bray International</div>
+              <h3>IIoT &amp; Software Intern</h3>
+              <p class="meta">Chennai, India | Nov 2025 — Dec 2025</p>
+            </div>
+            <div class="pills"><span class="pill">Python</span><span class="pill">SQL Server</span><span class="pill">FOCAS2</span><span class="pill">Dashboards</span></div>
+          </div>
+          <ul>
+            <li>Automated data pipelines using Python and SQL Server via FOCAS2 for CNC machine telemetry, improving data ingestion reliability by 40%.</li>
+            <li>Implemented interactive monitoring dashboards to visualize machine states, optimizing production scheduling and reducing unplanned downtime by 15%.</li>
+          </ul>
+        </article>
+
+        <article class="panel role">
+          <div class="row">
+            <div>
+              <div class="company">IIITDM Kancheepuram</div>
+              <h3>AI &amp; Machine Learning Intern — TinyML</h3>
+              <p class="meta">Chennai, India | Aug 2025 — Sep 2025</p>
+            </div>
+            <div class="pills"><span class="pill">TinyML</span><span class="pill">PyTorch</span><span class="pill">STM Microcontrollers</span><span class="pill">Audio ML</span></div>
+          </div>
+          <ul>
+            <li>Developed an audio-based ML classification pipeline optimized for TinyML inference on STM microcontrollers.</li>
+          </ul>
+        </article>
+
+        <article class="panel role">
+          <div class="row">
+            <div>
+              <div class="company">Schneider Electric</div>
+              <h3>Networking Intern</h3>
+              <p class="meta">Chennai, India | May 2025 — Jul 2025</p>
+            </div>
+            <div class="pills"><span class="pill">Python</span><span class="pill">Networking</span><span class="pill">Cybersecurity</span></div>
+          </div>
+          <ul>
+            <li>Developed a Python-based network monitoring dashboard to track multiple computers, monitor restart compliance, and display real-time company system statistics.</li>
+            <li>Experienced cybersecurity threat modeling and vulnerability assessments, securing critical factory telemetry streams and reducing attack surface by 30%.</li>
+          </ul>
+        </article>
+
+      </div>
+    </div>
+
+    <div class="shell">
+      <span class="kicker">Education</span>
+      <div class="head-row" style="margin-top:16px">
+        <div>
+          <h2 class="title">IIITDM Kancheepuram</h2>
+          <p class="copy-sm" style="margin-top:14px">B.Tech — Electronics and Communication Engineering<br>Indian Institute of Information Technology, Design and Manufacturing · Chennai, India<br>Aug 2023 — Present · Class of 2027</p>
+        </div>
+        <div class="metric-card" style="min-width:160px;text-align:center"><div class="v" style="font-size:2rem">8.27</div><div class="l">CGPA</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+</div>
+
+<!-- ==================== PROJECTS ==================== -->
+<div class="page" id="page-projects">
+<section class="page-shell">
+  <div class="page-content">
+
+    <div class="shell">
+      <span class="kicker">Projects</span>
+      <h1 class="title" style="margin-top:16px">Technical proof, across the whole AI stack.</h1>
+      <p class="copy" style="margin-top:24px;max-width:880px">Every unique project from my GitHub, each highlighting a different dimension: agentic GenAI orchestration, real-time ML platforms, computer vision, data engineering, classical ML, and embedded IoT.</p>
+      <div class="filters" style="margin-top:28px">
+        <button class="fbtn active" data-f="all">All</button>
+        <button class="fbtn" data-f="genai">GenAI &amp; Agents</button>
+        <button class="fbtn" data-f="ml">ML &amp; Data Science</button>
+        <button class="fbtn" data-f="cv">Computer Vision</button>
+        <button class="fbtn" data-f="fullstack">Full-Stack AI</button>
+        <button class="fbtn" data-f="iot">IoT &amp; Embedded</button>
+      </div>
+    </div>
+
+    <div class="proj-grid" id="projgrid">
+
+      <article class="panel proj-card" data-cat="genai fullstack">
+        <div class="top"><div><div class="cat">GenAI · Voice · Full-Stack</div><h3>Pocket Interview Coach</h3></div><div class="icon">🎤</div></div>
+        <p class="impact">Live mock-interview practice with AI coaching on what you said and how you said it. Built for the AMD AI Developer Hackathon (Unicorn Track, Best Use of Gemma).</p>
+        <ul>
+          <li>Scores content plus delivery — pace, tone, filler words, pauses, and confidence — not just the transcript.</li>
+          <li>Two AIs, two roles: a coach model generates questions and scores answers, while an independent "hiring manager" model reviews the full interview.</li>
+          <li>Open edition runs entirely on OpenRouter with a single API key — fork, drop in a key, deploy in minutes.</li>
+        </ul>
+        <div class="soft-line"></div>
+        <div class="pills"><span class="pill">TypeScript</span><span class="pill">Gemma</span><span class="pill">OpenRouter</span><span class="pill">Speech Analysis</span><span class="pill">ROCm</span></div>
+        <div class="foot" style="margin-top:20px">
+          <a class="gh" href="https://pocket-interview-new.vercel.app" target="_blank">Live demo ↗</a>
+          <a class="gh" href="https://github.com/sanjai-b-2006/pocket_interview_new" target="_blank"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+        </div>
+      </article>
+
+      <article class="panel proj-card" data-cat="genai fullstack">
+        <div class="top"><div><div class="cat">GenAI · Agents</div><h3>Agentic Blog Generation System</h3></div><div class="icon">🤖</div></div>
+        <p class="impact">Autonomous multi-language content pipeline that cut production time by 90% through multi-agent orchestration.</p>
+        <ul>
+          <li>Architected an asynchronous multi-agent NLP pipeline using LangGraph, FastAPI, and Celery for end-to-end content generation.</li>
+          <li>Engineered real-time state streaming via Redis Pub/Sub and WebSockets so clients watch agents work live.</li>
+          <li>Integrated ChromaDB for RAG context retrieval; deployed to cloud services via CI/CD.</li>
+        </ul>
+        <div class="soft-line"></div>
+        <div class="pills"><span class="pill">LangGraph</span><span class="pill">FastAPI</span><span class="pill">Celery</span><span class="pill">Redis</span><span class="pill">ChromaDB</span><span class="pill">WebSockets</span></div>
+        <div class="foot" style="margin-top:20px"><span></span>
+          <a class="gh" href="https://github.com/sanjai-b-2006/blogagentic" target="_blank"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+        </div>
+      </article>
+
+      <article class="panel proj-card" data-cat="fullstack ml">
+        <div class="top"><div><div class="cat">AIOps · Full-Stack</div><h3>Real-Time API Anomaly Detection</h3></div><div class="icon">📡</div></div>
+        <p class="impact">Full-stack observability dashboard on Hugging Face Spaces detecting anomalies in live API traffic and explaining them with LLMs.</p>
+        <ul>
+          <li>Single FastAPI process serves both a REST/WebSocket API and a compiled React UI, backed by Neon DB — deployed via Docker.</li>
+          <li>Real-time multivariate anomaly ensemble: Isolation Forest, IQR, and Z-score over live API metrics.</li>
+          <li>Groq and OpenRouter LLMs generate automated root-cause analysis and mitigation plans.</li>
+        </ul>
+        <div class="soft-line"></div>
+        <div class="pills"><span class="pill">FastAPI</span><span class="pill">React</span><span class="pill">Docker</span><span class="pill">Isolation Forest</span><span class="pill">Groq</span><span class="pill">Neon DB</span></div>
+        <div class="foot" style="margin-top:20px"><span></span>
+          <a class="gh" href="https://github.com/sanjai-b-2006/api-anomaly-detection" target="_blank"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+        </div>
+      </article>
+
+      <article class="panel proj-card" data-cat="genai fullstack">
+        <div class="top"><div><div class="cat">GenAI · Full-Stack</div><h3>FestFlow AI Pro</h3></div><div class="icon">🎪</div></div>
+        <p class="impact">Advanced expense management for college festivals — a multi-user Streamlit platform replacing spreadsheets with an auditable pipeline.</p>
+        <ul>
+          <li>Role-based multi-user system with an automated approval workflow.</li>
+          <li>OCR receipt scanning turns photos into structured expense records.</li>
+          <li>Robust financial reporting for organizers and treasurers.</li>
+        </ul>
+        <div class="soft-line"></div>
+        <div class="pills"><span class="pill">Python</span><span class="pill">Streamlit</span><span class="pill">OCR</span><span class="pill">RBAC</span></div>
+        <div class="foot" style="margin-top:20px"><span></span>
+          <a class="gh" href="https://github.com/sanjai-b-2006/festflowai" target="_blank"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+        </div>
+      </article>
+
+      <article class="panel proj-card" data-cat="genai">
+        <div class="top"><div><div class="cat">GenAI</div><h3>ShopSmart — GenAI Shopping Assistant</h3></div><div class="icon">🛍️</div></div>
+        <p class="impact">Generative-AI powered shopping experience with LLM-driven product discovery and recommendations.</p>
+        <ul>
+          <li>JavaScript front end with a JSON-driven catalog pipeline.</li>
+          <li>LLM-backed smart recommendations and product Q&amp;A.</li>
+        </ul>
+        <div class="soft-line"></div>
+        <div class="pills"><span class="pill">JavaScript</span><span class="pill">LLMs</span><span class="pill">JSON</span></div>
+        <div class="foot" style="margin-top:20px"><span></span>
+          <a class="gh" href="https://github.com/sanjai-b-2006/gen_ai_shopsmart" target="_blank"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+        </div>
+      </article>
+
+      <article class="panel proj-card" data-cat="fullstack">
+        <div class="top"><div><div class="cat">Full-Stack</div><h3>AquaSense</h3></div><div class="icon">💧</div></div>
+        <p class="impact">Water-intelligence web app on Vercel pairing sensor-style data with a clean monitoring dashboard, plus a companion Python engine (AquaQuest).</p>
+        <div class="soft-line"></div>
+        <div class="pills"><span class="pill">HTML/CSS</span><span class="pill">JavaScript</span><span class="pill">Vercel</span><span class="pill">Python</span></div>
+        <div class="foot" style="margin-top:20px">
+          <a class="gh" href="https://aquasense-one.vercel.app" target="_blank">Live demo ↗</a>
+          <a class="gh" href="https://github.com/sanjai-b-2006/aquasense" target="_blank"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+        </div>
+      </article>
+
+      <article class="panel proj-card" data-cat="iot">
+        <div class="top"><div><div class="cat">IoT · Embedded</div><h3>IoT Smart Waste Management</h3></div><div class="icon">🗑️</div></div>
+        <p class="impact">Hackathon-built IoT system that automatically sorts and manages waste using embedded C++ on microcontrollers, with a full Wokwi simulation.</p>
+        <div class="soft-line"></div>
+        <div class="pills"><span class="pill">C++</span><span class="pill">Arduino</span><span class="pill">Sensors</span><span class="pill">Wokwi</span></div>
+        <div class="foot" style="margin-top:20px"><span></span>
+          <a class="gh" href="https://github.com/sanjai-b-2006/iot_smart_garbage" target="_blank"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+        </div>
+      </article>
+
+      <article class="panel proj-card" data-cat="cv">
+        <div class="top"><div><div class="cat">Computer Vision</div><h3>YOLO Real-Time Object Detection</h3></div><div class="icon">👁️</div></div>
+        <p class="impact">Object detection web app using YOLOv3-Tiny and Streamlit for real-time inference on images and video — simple to run, fast on CPU.</p>
+        <div class="soft-line"></div>
+        <div class="pills"><span class="pill">YOLOv3</span><span class="pill">OpenCV</span><span class="pill">Streamlit</span></div>
+        <div class="foot" style="margin-top:20px"><span></span>
+          <a class="gh" href="https://github.com/sanjai-b-2006/YOLO-Real-Time-Object-Detection" target="_blank"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+        </div>
+      </article>
+
+      <article class="panel proj-card" data-cat="cv">
+        <div class="top"><div><div class="cat">Computer Vision</div><h3>Anime Character Boundary Extraction</h3></div><div class="icon">🎨</div></div>
+        <p class="impact">Streamlit app extracting anime character boundaries from uploaded images using classical CV — edge and contour detection with drag-and-drop upload.</p>
+        <div class="soft-line"></div>
+        <div class="pills"><span class="pill">OpenCV</span><span class="pill">Streamlit</span><span class="pill">Edge Detection</span></div>
+        <div class="foot" style="margin-top:20px"><span></span>
+          <a class="gh" href="https://github.com/sanjai-b-2006/Anime-boundry-extraction-with-streamlit" target="_blank"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+        </div>
+      </article>
+
+      <article class="panel proj-card" data-cat="ml">
+        <div class="top"><div><div class="cat">Data Engineering</div><h3>YouTube Data Engineering Pipeline</h3></div><div class="icon">📊</div></div>
+        <p class="impact">Cloud data-engineering workflow that securely manages, streamlines, and analyzes structured and semi-structured YouTube data — ingestion, cataloging, and analytics-ready outputs.</p>
+        <div class="soft-line"></div>
+        <div class="pills"><span class="pill">Python</span><span class="pill">AWS</span><span class="pill">ETL</span><span class="pill">SQL</span></div>
+        <div class="foot" style="margin-top:20px"><span></span>
+          <a class="gh" href="https://github.com/sanjai-b-2006/dataengineering-project-on-youtube-analysis" target="_blank"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+        </div>
+      </article>
+
+      <article class="panel proj-card" data-cat="ml">
+        <div class="top"><div><div class="cat">ML · Analytics</div><h3>Mess Hall Crowd Analysis &amp; Prediction</h3></div><div class="icon">🍽️</div></div>
+        <p class="impact">Complete analytics solution predicting weekly crowd fluctuations in a university mess hall — moving management from reactive to proactive.</p>
+        <ul>
+          <li>Full EDA identifying the key drivers of attendance.</li>
+          <li>High-accuracy predictive model served through a Streamlit app.</li>
+        </ul>
+        <div class="soft-line"></div>
+        <div class="pills"><span class="pill">Pandas</span><span class="pill">Scikit-learn</span><span class="pill">Streamlit</span><span class="pill">EDA</span></div>
+        <div class="foot" style="margin-top:20px"><span></span>
+          <a class="gh" href="https://github.com/sanjai-b-2006/Team_restless_mess_crowd_analysis" target="_blank"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+        </div>
+      </article>
+
+      <article class="panel proj-card" data-cat="ml">
+        <div class="top"><div><div class="cat">Deep Learning</div><h3>Customer Churn Prediction (ANN)</h3></div><div class="icon">🔄</div></div>
+        <p class="impact">Artificial Neural Network in TensorFlow/Keras predicting customer churn from structured customer data — feature engineering, training, and evaluation end to end.</p>
+        <div class="soft-line"></div>
+        <div class="pills"><span class="pill">TensorFlow</span><span class="pill">Keras</span><span class="pill">ANN</span></div>
+        <div class="foot" style="margin-top:20px"><span></span>
+          <a class="gh" href="https://github.com/sanjai-b-2006/churn-modelling" target="_blank"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+        </div>
+      </article>
+
+      <article class="panel proj-card" data-cat="ml">
+        <div class="top"><div><div class="cat">ML</div><h3>Credit Card Fraud Detection</h3></div><div class="icon">💳</div></div>
+        <p class="impact">Random Forest classifier detecting fraudulent transactions on the Kaggle credit-card dataset, with confusion-matrix driven evaluation on heavily imbalanced classes.</p>
+        <div class="soft-line"></div>
+        <div class="pills"><span class="pill">Random Forest</span><span class="pill">Scikit-learn</span><span class="pill">Kaggle</span></div>
+        <div class="foot" style="margin-top:20px"><span></span>
+          <a class="gh" href="https://github.com/sanjai-b-2006/creditcard-fraud" target="_blank"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+        </div>
+      </article>
+
+      <article class="panel proj-card" data-cat="ml">
+        <div class="top"><div><div class="cat">ML</div><h3>Weather Prediction — Naive Bayes</h3></div><div class="icon">🌦️</div></div>
+        <p class="impact">Naive Bayes classifier predicting weather conditions (drizzle, rain, sun, snow, fog) from precipitation, temperature extremes, and wind-speed features.</p>
+        <div class="soft-line"></div>
+        <div class="pills"><span class="pill">Naive Bayes</span><span class="pill">Pandas</span><span class="pill">Jupyter</span></div>
+        <div class="foot" style="margin-top:20px"><span></span>
+          <a class="gh" href="https://github.com/sanjai-b-2006/Weather-prediction-using-naive-bayes" target="_blank"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+        </div>
+      </article>
+
+      <article class="panel proj-card" data-cat="ml">
+        <div class="top"><div><div class="cat">NLP · Multimodal</div><h3>Speech Translation Toolkit</h3></div><div class="icon">🗣️</div></div>
+        <p class="impact">Python tools for speech-to-speech translation plus companion utilities for image-to-text and audio-to-text conversion — a practical multimodal NLP toolbox.</p>
+        <div class="soft-line"></div>
+        <div class="pills"><span class="pill">Python</span><span class="pill">Speech Recognition</span><span class="pill">NLP</span></div>
+        <div class="foot" style="margin-top:20px"><span></span>
+          <a class="gh" href="https://github.com/sanjai-b-2006/speech-translation" target="_blank"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+        </div>
+      </article>
+
+      <article class="panel proj-card" data-cat="fullstack">
+        <div class="top"><div><div class="cat">Automation</div><h3>Python Auto-Filler</h3></div><div class="icon">📝</div></div>
+        <p class="impact">Three-step form-automation toolkit: an auto-detector maps data columns to form fields, generates a mapping file, then fills forms automatically — zero tedious setup.</p>
+        <div class="soft-line"></div>
+        <div class="pills"><span class="pill">Python</span><span class="pill">Automation</span><span class="pill">Selenium</span></div>
+        <div class="foot" style="margin-top:20px"><span></span>
+          <a class="gh" href="https://github.com/sanjai-b-2006/Python_Auto-filler" target="_blank"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ==================== SKILLS ==================== -->
+<div class="page" id="page-skills">
+<section class="page-shell">
+  <div class="page-content">
+
+    <div class="shell">
+      <span class="kicker">Skills</span>
+      <h1 class="title" style="margin-top:16px">A stack built for shipping AI.</h1>
+      <p class="copy" style="margin-top:24px;max-width:880px">Grouped by how I actually use them — modeling, orchestration, serving, and interfaces.</p>
+    </div>
+
+    <div class="grid2">
+      <div class="panel">
+        <div class="skill-head">AI · Deep Learning · GenAI</div>
+        <div class="pills"><span class="pill">PyTorch</span><span class="pill">Scikit-learn</span><span class="pill">TensorFlow / Keras</span><span class="pill">LangChain</span><span class="pill">LangGraph</span><span class="pill">Hugging Face</span><span class="pill">OpenAI</span><span class="pill">RAG</span><span class="pill">TinyML</span><span class="pill">Reinforcement Learning</span><span class="pill">Time-Series Forecasting</span></div>
+      </div>
+      <div class="panel">
+        <div class="skill-head">Languages</div>
+        <div class="pills"><span class="pill">Python</span><span class="pill">C</span><span class="pill">C++</span><span class="pill">SQL</span><span class="pill">JavaScript</span><span class="pill">TypeScript</span></div>
+      </div>
+      <div class="panel">
+        <div class="skill-head">Backend · Cloud · DevOps</div>
+        <div class="pills"><span class="pill">FastAPI</span><span class="pill">Celery</span><span class="pill">Docker</span><span class="pill">Redis</span><span class="pill">PostgreSQL</span><span class="pill">MongoDB</span><span class="pill">ChromaDB</span><span class="pill">CI/CD</span><span class="pill">Git</span><span class="pill">Cloud Services</span></div>
+      </div>
+      <div class="panel">
+        <div class="skill-head">Frontend &amp; UI</div>
+        <div class="pills"><span class="pill">React</span><span class="pill">Vite</span><span class="pill">WebSockets</span><span class="pill">HTML / CSS</span><span class="pill">Streamlit</span></div>
+      </div>
+    </div>
+
+    <div class="shell">
+      <span class="kicker">How I work</span>
+      <div class="grid3" style="margin-top:24px">
+        <div class="metric-card"><div class="v">Architecture first</div><div class="l">Projects are framed around ingestion, orchestration, inference, and serving — not generic app-build language.</div></div>
+        <div class="metric-card"><div class="v">Honest engineering</div><div class="l">Streaming, RAG, and deployment claims stay accurate to how each system actually works.</div></div>
+        <div class="metric-card"><div class="v">Soft skills that ship</div><div class="l">Problem-solving, decision-making, teamwork, leadership, adaptability, and time management.</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+</div>
+
+<!-- ==================== CONTACT ==================== -->
+<div class="page" id="page-contact">
+<section class="page-shell">
+  <div class="page-content">
+
+    <div class="shell">
+      <span class="kicker">Contact</span>
+      <h1 class="title" style="margin-top:16px">Let's build something intelligent.</h1>
+      <p class="copy" style="margin-top:24px;max-width:720px">I'm open to internships, collaborations, and roles in AI/ML engineering, GenAI, and full-stack AI systems. Email is fastest — I usually reply within a day.</p>
+      <div class="ctas" style="margin-top:28px;display:flex;gap:16px;flex-wrap:wrap">
+        <a class="btn-primary" href="mailto:sanjai.balamoorthy@gmail.com">Say hello 👋</a>
+        <a class="btn-secondary" href="Sanjai_B_Resume.pdf" download="Sanjai_B_Resume.pdf">⬇ Download Resume</a>
+        <a class="btn-secondary" href="https://github.com/sanjai-b-2006" target="_blank">GitHub ↗</a>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="panel">
+        <div class="skill-head">Reach me directly</div>
+        <div class="c-row"><div class="ic">✉️</div><div><span class="small">Email</span><a href="mailto:sanjai.balamoorthy@gmail.com">sanjai.balamoorthy@gmail.com</a></div></div>
+        <div class="c-row"><div class="ic">📞</div><div><span class="small">Phone</span><a href="tel:+919788656199">+91 97886 56199</a></div></div>
+        <div class="c-row"><div class="ic">📍</div><div><span class="small">Location</span><span class="val">Chennai, India</span></div></div>
+      </div>
+      <div class="panel">
+        <div class="skill-head">Profiles</div>
+        <div class="c-row"><div class="ic">🐙</div><div><span class="small">GitHub</span><a href="https://github.com/sanjai-b-2006" target="_blank">github.com/sanjai-b-2006</a></div></div>
+        <div class="c-row"><div class="ic">💼</div><div><span class="small">LinkedIn</span><a href="https://www.linkedin.com/in/sanjai-b-4a1385279/" target="_blank">linkedin.com/in/sanjai-b-4a1385279</a></div></div>
+        <div class="c-row"><div class="ic">🎓</div><div><span class="small">University</span><span class="val">IIITDM Kancheepuram · Class of 2027</span></div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+</div>
+
+<footer>© 2026 Sanjai B · <a href="https://github.com/sanjai-b-2006" target="_blank">GitHub</a> · <a href="https://www.linkedin.com/in/sanjai-b-4a1385279/" target="_blank">LinkedIn</a> · Built with care in Chennai</footer>
+
+<script>
+// ---- router (click-driven, hash kept in sync when the environment allows it) ----
+const routes={'':'home','/':'home','/about':'about','/projects':'projects','/skills':'skills','/contact':'contact'};
+function showPage(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const el=document.getElementById('page-'+page);
+  el.classList.add('active');
+  el.style.animation='none';el.offsetHeight;el.style.animation='';
+  document.querySelectorAll('[data-page]').forEach(a=>a.classList.toggle('active',a.dataset.page===page));
+  document.getElementById('mobilemenu').classList.remove('open');
+  scrollTo(0,0);
+}
+function router(){
+  const hash=location.hash.replace(/^#/,'')||'/';
+  showPage(routes[hash]||'home');
+}
+// direct click handling — works even where hash navigation is sandboxed
+document.addEventListener('click',e=>{
+  const a=e.target.closest('a[href^="#/"], a[href="#/"], .logo');
+  if(!a)return;
+  const href=a.getAttribute('href')||'#/';
+  if(!href.startsWith('#'))return;
+  e.preventDefault();
+  const page=routes[href.slice(1)]||'home';
+  showPage(page);
+  try{history.replaceState(null,'',href);}catch(err){}
+});
+addEventListener('hashchange',router);
+router();
+
+// ---- nav scroll state ----
+addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>24),{passive:true});
+
+// ---- mobile menu ----
+document.getElementById('burger').addEventListener('click',()=>document.getElementById('mobilemenu').classList.toggle('open'));
+
+// ---- project filters ----
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  const f=b.dataset.f;
+  document.querySelectorAll('#projgrid .proj-card').forEach(p=>{
+    p.classList.toggle('hide',f!=='all'&&!p.dataset.cat.split(' ').includes(f));
+  });
+}));
+</script>
+</body>
+</html>
