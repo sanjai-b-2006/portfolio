@@ -185,6 +185,87 @@ footer{position:relative;z-index:10;border-top:1px solid rgba(255,255,255,.08);p
   color:var(--text-secondary);font-size:.85rem;margin-top:auto}
 footer a{color:#a5f3fc}
 footer a:hover{color:#cffafe}
+
+/* ============ mobile polish ============ */
+@media(max-width:640px){
+  .page-shell{padding:92px 14px 52px}
+  .page-content{gap:20px}
+  .hero-grid{gap:26px}
+  .hero h1{font-size:2.35rem}
+  .hero .desc{font-size:.97rem;line-height:1.75;margin-top:18px}
+  .ctas{gap:10px}
+  .ctas a{flex:1 1 45%;justify-content:center;padding:12px 14px;font-size:.85rem}
+  .hero-metrics{margin-top:28px;gap:12px}
+  .metric-card{padding:16px}
+  .metric-card .v{font-size:1.15rem}
+  .title{font-size:1.85rem}
+  .copy{font-size:.95rem;line-height:1.75}
+  .shell{padding:22px 18px;border-radius:1.4rem}
+  .panel{padding:18px;border-radius:1.2rem}
+  .role .row{flex-direction:column}
+  .role h3,.proj-card h3{font-size:1.2rem}
+  .head-row{flex-direction:column;align-items:flex-start}
+  .filters{gap:8px}
+  .fbtn{padding:8px 14px;font-size:.78rem}
+  .photo-wrap{width:min(210px,64%)}
+  .logo .name{font-size:1.5rem}
+  .c-row a,.c-row .val{font-size:.85rem}
+  footer{padding:24px 14px;font-size:.78rem}
+}
+
+/* ============ light theme ============ */
+body.light{
+  --bg-primary:#f2f6fc; --text-primary:#0e1b2e; --text-secondary:#51617d;
+  color:var(--text-primary);
+  background:
+    radial-gradient(circle at 15% 15%,rgba(2,132,199,.10),transparent 28%),
+    radial-gradient(circle at 82% 5%,rgba(217,119,6,.08),transparent 24%),
+    linear-gradient(180deg,#f2f6fc 0%,#e9f0fa 45%,#f2f6fc 100%);
+  background-attachment:fixed;
+}
+body.light ::selection{background:#0e1b2e;color:#fff}
+body.light .page-shell::before{
+  background-image:linear-gradient(rgba(14,27,46,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(14,27,46,.05) 1px,transparent 1px)}
+body.light .shell{background:rgba(255,255,255,.8);border-color:rgba(14,27,46,.09);box-shadow:0 24px 60px rgba(15,40,80,.1)}
+body.light .panel{background:rgba(255,255,255,.9);border-color:rgba(14,27,46,.09)}
+body.light .metric-card{background:rgba(14,27,46,.03);border-color:rgba(14,27,46,.09)}
+body.light .metric-card:hover{border-color:rgba(2,132,199,.35);background:rgba(14,27,46,.05)}
+body.light .title,body.light h1,body.light h2,body.light h3,body.light .metric-card .v{color:#0e1b2e}
+body.light .hero h1 em,body.light .eyebrow-link{color:#0369a1}
+body.light .kicker{color:#0369a1;border-color:rgba(3,105,161,.25);background:rgba(3,105,161,.06)}
+body.light .pill{border-color:rgba(14,27,46,.13);background:rgba(14,27,46,.04);color:#334155}
+body.light .cat,body.light .company,body.light .skill-head,body.light .hero-side .panel .t{color:#0369a1}
+body.light .role li::before,body.light .proj-card li::before{background:#0284c7}
+body.light .btn-primary{background:#0e1b2e;color:#fff}
+body.light .btn-primary:hover{background:#1b3050}
+body.light .btn-secondary{border-color:rgba(14,27,46,.16);background:#fff;color:#0e1b2e}
+body.light .btn-secondary:hover{border-color:#0284c7}
+body.light nav.scrolled{background:rgba(255,255,255,.82);border-color:rgba(14,27,46,.09)}
+body.light .logo .name{color:#0e1b2e}
+body.light .logo .name span{color:#0369a1}
+body.light .nav-pillbox{border-color:rgba(14,27,46,.12);background:rgba(255,255,255,.7)}
+body.light .nav-pillbox a:hover{background:rgba(14,27,46,.05);color:#0e1b2e}
+body.light .nav-pillbox a.active{background:#0e1b2e;color:#fff}
+body.light .icon-btn{border-color:rgba(14,27,46,.14);background:#fff;color:#51617d}
+body.light .icon-btn:hover{color:#0e1b2e;border-color:#0284c7}
+body.light .burger{border-color:rgba(14,27,46,.14);background:#fff;color:#0e1b2e}
+body.light .mobile-menu{background:#f2f6fc;border-color:rgba(14,27,46,.09)}
+body.light .mobile-menu a{background:#fff;color:#51617d}
+body.light .mobile-menu a.active{background:#0e1b2e;color:#fff}
+body.light .proj-card .icon{border-color:rgba(14,27,46,.1);background:rgba(14,27,46,.04)}
+body.light .proj-card .gh{border-color:rgba(14,27,46,.14);background:#fff;color:#0e1b2e}
+body.light .proj-card .gh:hover{color:#0369a1;border-color:#0284c7}
+body.light .fbtn{border-color:rgba(14,27,46,.14);background:#fff;color:#51617d}
+body.light .fbtn:hover{color:#0e1b2e;border-color:#0284c7}
+body.light .fbtn.active{background:#0e1b2e;color:#fff}
+body.light .soft-line{background:linear-gradient(90deg,transparent,rgba(14,27,46,.15),transparent)}
+body.light .c-row{border-color:rgba(14,27,46,.08)}
+body.light .c-row .ic{border-color:rgba(14,27,46,.1);background:rgba(14,27,46,.04)}
+body.light .c-row a,body.light .c-row .val{color:#0e1b2e}
+body.light .c-row a:hover{color:#0369a1}
+body.light .photo-wrap img{border-color:#fff}
+body.light footer{border-color:rgba(14,27,46,.09)}
+body.light footer a{color:#0369a1}
 </style>
 </head>
 <body>
@@ -210,6 +291,7 @@ footer a:hover{color:#cffafe}
         <svg viewBox="0 0 16 16"><path d="M0 1.15C0 .52.53 0 1.18 0h13.64C15.47 0 16 .52 16 1.15v13.7c0 .63-.53 1.15-1.18 1.15H1.18A1.17 1.17 0 0 1 0 14.85V1.15zm4.94 12.24V6.17H2.54v7.22h2.4zM3.74 5.18c.84 0 1.36-.55 1.36-1.24-.02-.71-.52-1.25-1.34-1.25S2.4 3.23 2.4 3.94c0 .69.52 1.24 1.33 1.24h.01zm4.91 8.21V9.36c0-.22.02-.43.08-.59.17-.43.57-.88 1.23-.88.87 0 1.22.66 1.22 1.63v3.87h2.4V9.25c0-2.22-1.18-3.25-2.76-3.25-1.27 0-1.84.7-2.16 1.19v.03h-.02l.02-.03V6.17h-2.4c.03.68 0 7.22 0 7.22h2.39z"/></svg>
       </a>
     </div>
+    <button class="icon-btn" id="themeBtn" aria-label="Toggle theme" style="cursor:pointer;font-size:1rem">☀️</button>
     <button class="burger" id="burger" aria-label="Menu">☰</button>
   </div>
 </div></nav>
@@ -744,6 +826,16 @@ addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('s
 
 // ---- mobile menu ----
 document.getElementById('burger').addEventListener('click',()=>document.getElementById('mobilemenu').classList.toggle('open'));
+
+// ---- theme toggle (dark default, light on demand, remembered) ----
+const themeBtn=document.getElementById('themeBtn');
+function setTheme(light){
+  document.body.classList.toggle('light',light);
+  themeBtn.textContent=light?'🌙':'☀️';
+  try{localStorage.setItem('theme',light?'light':'dark');}catch(e){}
+}
+themeBtn.addEventListener('click',()=>setTheme(!document.body.classList.contains('light')));
+try{if(localStorage.getItem('theme')==='light')setTheme(true);}catch(e){}
 
 // ---- project filters ----
 document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
