@@ -268,7 +268,7 @@ body.light footer{border-color:rgba(14,27,46,.09)}
 body.light footer a{color:#0369a1}
 </style>
 </head>
-<body>
+<body class="light">
 
 <nav id="nav"><div class="nav-inner">
   <a class="logo" href="#/">
@@ -835,7 +835,9 @@ function setTheme(light){
   try{localStorage.setItem('theme',light?'light':'dark');}catch(e){}
 }
 themeBtn.addEventListener('click',()=>setTheme(!document.body.classList.contains('light')));
-try{if(localStorage.getItem('theme')==='light')setTheme(true);}catch(e){}
+// light is the default; switch to dark only if the visitor chose it before
+let savedTheme=null;try{savedTheme=localStorage.getItem('theme');}catch(e){}
+setTheme(savedTheme!=='dark');
 
 // ---- project filters ----
 document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
